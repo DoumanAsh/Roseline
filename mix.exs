@@ -7,6 +7,7 @@ defmodule Aru.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     aliases: aliases(),
      deps: deps()]
   end
 
@@ -19,10 +20,16 @@ defmodule Aru.Mixfile do
     ]
   end
 
+  defp aliases do
+    [
+      test: "test --no-start"
+    ]
+  end
+
   defp deps do
     [
       {:kaguya, "~> 0.5.1"},
-      {:elivndb, "~> 0.2.0"},
+      {:elivndb, "~> 0.2.1"},
       {:credo, "~> 0.7.4", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
