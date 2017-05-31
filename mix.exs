@@ -13,9 +13,9 @@ defmodule Aru.Mixfile do
 
   def application do
     [
+      mod: {Db, []},
       extra_applications: [
-        :logger,
-        :kaguya
+        :logger
       ]
     ]
   end
@@ -28,9 +28,11 @@ defmodule Aru.Mixfile do
 
   defp deps do
     [
-      {:kaguya, "~> 0.5.1"},
+      {:ecto, "~> 2.0"},
+      {:ecto_mnesia, "~> 0.9.0"},
+      {:kaguya, git: "git://github.com/Luminarys/Kaguya"},
       {:elivndb, "~> 0.2.1"},
-      {:credo, "~> 0.7.4", only: [:dev, :test]},
+      {:credo, "~> 0.7.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
