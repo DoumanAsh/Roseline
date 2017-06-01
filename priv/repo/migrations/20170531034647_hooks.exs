@@ -3,8 +3,7 @@ defmodule Db.Repo.Migrations.Hooks do
 
   def change do
     create table(:hooks) do
-      add :name, :string
-      add :kanji, :string
+      add :id, :id, primary_key: true
       add :code, :string
       add :versions, {:map, :string}
     end

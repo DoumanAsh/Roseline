@@ -13,9 +13,9 @@ defmodule Aru.Mixfile do
 
   def application do
     [
-      mod: {Db, []},
+      mod: {Aru, []},
       extra_applications: [
-        :logger
+        :logger,
       ]
     ]
   end
@@ -28,6 +28,7 @@ defmodule Aru.Mixfile do
 
   defp deps do
     [
+      {:cachex, "~> 2.1"},
       {:ecto, "~> 2.0"},
       {:ecto_mnesia, "~> 0.9.0"},
       {:kaguya, git: "git://github.com/Luminarys/Kaguya"},
