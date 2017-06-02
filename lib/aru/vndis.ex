@@ -13,6 +13,7 @@ defmodule Aru.Vndis do
     match ".vn ~title", :vn_handler, async: true, doc: "Looks-up VN"
     match ".hook :cmd ~arg", :hook, async: true, doc: "Access hook DB. Allowed commands: get, add, del"
     match ".hook :cmd", :hook_help, async: true, nodoc: true
+    match_re ~r/.h([0-9]+)$/, :h, async: true, doc: "Shortcut to get hook by VNDB ID"
     match_all :vndb_high_handler, async: true
   end
 
@@ -225,4 +226,10 @@ defmodule Aru.Vndis do
     reply "#{nick}: bad command '#{cmd}'. Allowed commands: add, get and del"
   end
 
+  defh h(%{trailing: <<_::binary-size(2), id::binary>>, user: %{nick: nick}}) do
+    case Db.Repo.get_hook(id) do
+      nil -> reply "#{nick}: No hook for 'v#{id}' :("
+      result -> reply "#{nick}: v#{id} - #{get_hook(result, nil)}"
+    end
+  end
 end
