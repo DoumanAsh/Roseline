@@ -11,7 +11,7 @@ defmodule Aru.Vndis do
     match ".ping", :ping_handler, doc: "Responds with ping"
     match ".cache", :cache_handler, doc: "Responds with size of bot's cache"
     match ".vn ~title", :vn_handler, async: true, doc: "Looks-up VN"
-    match ".hook :cmd ~arg", :hook, async: true, doc: "Access hook DB. Allowed commands: get, add, del"
+    match ".hook :cmd ~arg", :hook, async: true, doc: "Access hook DB. Allowed commands: get, add, update, del"
     match ".hook :cmd", :hook_help, async: true, nodoc: true
     match_re ~r/.h([0-9]+)$/, :h, async: true, doc: "Shortcut to get hook by VNDB ID"
     match_all :vndb_high_handler, async: true
@@ -219,11 +219,11 @@ defmodule Aru.Vndis do
 
   #bad hook cmd
   defh hook(%{user: %{nick: nick}}, %{"cmd" => cmd, "arg" => _}) do
-    reply "#{nick}: bad command '#{cmd}'. Allowed commands: add, get and del"
+    reply "#{nick}: bad command '#{cmd}'. Allowed commands: add, get, update and del"
   end
 
   defh hook_help(%{user: %{nick: nick}}, %{"cmd" => cmd}) do
-    reply "#{nick}: bad command '#{cmd}'. Allowed commands: add, get and del"
+    reply "#{nick}: bad command '#{cmd}'. Allowed commands: add, get, update and del"
   end
 
   defh h(%{trailing: <<_::binary-size(2), id::binary>>, user: %{nick: nick}}) do
