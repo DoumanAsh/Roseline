@@ -1,9 +1,9 @@
-defmodule Aru.Vndis do
+defmodule Roseline.Vndis do
   @moduledoc """
   Bot module for #vndis
   """
   require Logger
-  use Kaguya.Module, "Aru"
+  use Kaguya.Module, "Roseline"
 
   @vndb_vn_id ~r/(^|\s)v([0-9]+)/
 
@@ -30,7 +30,7 @@ defmodule Aru.Vndis do
         [left] -> left
       end
 
-      case Aru.Vndb.get_vn(filters: ~f(id = #{id})) do
+      case Roseline.Vndb.get_vn(filters: ~f(id = #{id})) do
         {:results, %{"items" => [item | _], "num" => 1}} -> reply "v#{id} #{item["title"]} - https://vndb.org/v#{item["id"]}"
         _ -> :noop
       end
@@ -38,7 +38,7 @@ defmodule Aru.Vndis do
   end
 
   defh cache_handler(%{user: %{nick: nick}}) do
-    reply "#{nick}: cache size='#{Aru.Vndb.cache_size()}'"
+    reply "#{nick}: cache size='#{Roseline.Vndb.cache_size()}'"
   end
 
   defh ping_handler(%{user: %{nick: nick}}) do
@@ -52,7 +52,7 @@ defmodule Aru.Vndis do
   defh vn_handler(%{user: %{nick: nick}}, %{"title" => title}) do
     import EliVndb.Filters
     title = String.trim(title)
-    case Aru.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
+    case Roseline.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
       {:results, %{"items" => [item | _], "num" => 1}} -> reply "#{nick}: https://vndb.org/v#{item["id"]}"
       {:results, %{"num" => 0}} -> reply "#{nick}: Couldn't find anything. #{try_yourself(title)}"
       {:results, %{"num" => num}} -> reply "#{nick}: There are too many hits='#{num}'. #{try_yourself(title)}"
@@ -81,7 +81,7 @@ defmodule Aru.Vndis do
     case Regex.run(@vndb_vn_id, title, capture: :all_but_first) do
       [_, id] -> {:ok, String.to_integer(id)}
       nil ->
-        case Aru.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
+        case Roseline.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
           {:results, %{"items" => [item | _], "num" => 1}} -> {:ok, item["id"]}
           {:results, %{"num" => 0}} -> {:error, "'#{title}': No such VN..."}
           {:results, %{"num" => num}} -> {:error, "'#{title}': Too many hits='#{num}'. #{try_yourself(title)}"}

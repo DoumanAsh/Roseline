@@ -1,6 +1,6 @@
-defmodule Aru do
+defmodule Roseline do
   @moduledoc """
-  Aru Application
+  Roseline Application
   """
   use Application
 

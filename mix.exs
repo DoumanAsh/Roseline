@@ -1,8 +1,8 @@
-defmodule Aru.Mixfile do
+defmodule Roseline.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :aru,
+    [app: :roseline,
      version: "0.1.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
@@ -13,7 +13,7 @@ defmodule Aru.Mixfile do
 
   def application do
     [
-      mod: {Aru, []},
+      mod: {Roseline, []},
       extra_applications: [
         :logger,
       ]

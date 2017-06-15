@@ -20,3 +20,8 @@ erl_crash.dump
 *.ez
 
 priv/data/
+
+
+#logs
+*.log
+nohup.out
