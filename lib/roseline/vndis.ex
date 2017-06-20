@@ -50,15 +50,12 @@ defmodule Roseline.Vndis do
   end
 
   defh vn_handler(%{user: %{nick: nick}}, %{"title" => title}) do
-    import EliVndb.Filters
     title = String.trim(title)
-    case Roseline.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
-      {:results, %{"items" => [item | _], "num" => 1}} -> reply "#{nick}: https://vndb.org/v#{item["id"]}"
-      {:results, %{"num" => 0}} -> reply "#{nick}: Couldn't find anything. #{try_yourself(title)}"
-      {:results, %{"num" => num}} -> reply "#{nick}: There are too many hits='#{num}'. #{try_yourself(title)}"
-      result ->
-        Logger.error fn -> 'Unexpected result "#{inspect(result)}"' end
-        reply "#{nick}: Error processing your request. #{try_yourself(title)}"
+    case Roseline.Vndb.look_up_vn(title) do
+      {:ok, item} -> reply "#{nick}: https://vndb.org/v#{item["id"]}"
+      :not_found -> reply "#{nick}: Couldn't find anything. #{try_yourself(title)}"
+      {:too_many, num} -> reply "#{nick}: There are too many hits='#{num}'. #{try_yourself(title)}"
+      :error -> reply "#{nick}: Error processing your request. #{try_yourself(title)}"
     end
   end
 
@@ -77,17 +74,14 @@ defmodule Roseline.Vndis do
 
   @spec title_to_vndb_id(String.t()) :: {:ok, integer()} | {:error, String.t()}
   defp title_to_vndb_id(title) do
-    import EliVndb.Filters
     case Regex.run(@vndb_vn_id, title, capture: :all_but_first) do
       [_, id] -> {:ok, String.to_integer(id)}
       nil ->
-        case Roseline.Vndb.get_vn(filters: ~f(title ~ "#{title}" or original ~ "#{title}")) do
-          {:results, %{"items" => [item | _], "num" => 1}} -> {:ok, item["id"]}
-          {:results, %{"num" => 0}} -> {:error, "'#{title}': No such VN..."}
-          {:results, %{"num" => num}} -> {:error, "'#{title}': Too many hits='#{num}'. #{try_yourself(title)}"}
-          result ->
-            Logger.error fn -> 'Unexpected result "#{inspect(result)}"' end
-            "Error processing your request. #{try_yourself(title)}"
+        case Roseline.Vndb.look_up_vn(title) do
+          {:ok, item} -> {:ok, item["id"]}
+          :not_found -> {:error, "'#{title}': No such VN..."}
+          {:too_many, num} -> {:error, "'#{title}': Too many hits='#{num}'. #{try_yourself(title)}"}
+          :error -> "Unexpected error while processing your request. #{try_yourself(title)}"
         end
     end
   end
