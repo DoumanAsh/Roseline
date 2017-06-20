@@ -1,6 +1,6 @@
 defmodule Db.Repo do
   @moduledoc "DB Repo"
-  use Ecto.Repo, otp_app: :aru
+  use Ecto.Repo, otp_app: :roseline
 
   @spec add_hook(integer(), String.t(), String.t() | nil) :: atom()
   def add_hook(id, code, version) do

@@ -2,7 +2,7 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :aru, Db.Repo,
+config :roseline, Db.Repo,
   adapter: EctoMnesia.Adapter
 
 config :aru, ecto_repos: [Db.Repo]
@@ -22,4 +22,5 @@ config :kaguya,
   channels: ["#vndis"],
   help_cmd: ".help",
   use_ssl: true,
-  reconnect_interval: 5
+  reconnect_interval: 5,
+  server_timeout: 600000
