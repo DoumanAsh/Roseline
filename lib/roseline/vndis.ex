@@ -227,6 +227,8 @@ defmodule Roseline.Vndis do
   end
 
   defh h(%{trailing: <<_::binary-size(2), id::binary>>, user: %{nick: nick}}) do
+    # It must be valid integer according to regex
+    id = String.to_integer(id, 10)
     case Db.Repo.get_hook(id) do
       nil -> reply "#{nick}: No hook for 'v#{id}' :("
       result -> reply "#{nick}: v#{id} - #{get_hook(result, nil)}"
