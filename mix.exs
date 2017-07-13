@@ -31,7 +31,7 @@ defmodule Roseline.Mixfile do
       {:cachex, "~> 2.1"},
       {:ecto, "~> 2.0"},
       {:ecto_mnesia, "~> 0.9.0"},
-      {:kaguya, git: "git://github.com/Luminarys/Kaguya"},
+      {:kaguya, "~> 0.6.4"},
       {:elivndb, "~> 0.2.3"},
       {:credo, "~> 0.7.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
