@@ -5,7 +5,7 @@ use Mix.Config
 config :roseline, Db.Repo,
   adapter: EctoMnesia.Adapter
 
-config :aru, ecto_repos: [Db.Repo]
+config :kaguya, ecto_repos: [Db.Repo]
 
 config :ecto_mnesia,
   host: {:system, :atom, "MNESIA_HOST", Kernel.node()},
