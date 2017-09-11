@@ -1,7 +1,7 @@
 %{"bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
   "cachex": {:hex, :cachex, "2.1.0", "fad49b4e78d11c6c314e75bd8c9408f5b78cb065c047442798caed10803ee3be", [:mix], [{:eternal, "~> 1.1", [hex: :eternal, repo: "hexpm", optional: false]}], "hexpm"},
   "confex": {:hex, :confex, "1.5.0", "172e4769d7a951aae3f9fd1b139da9ab0cd6a4d30b29959b0bde57826a19eb21", [:mix], [], "hexpm"},
-  "credo": {:hex, :credo, "0.7.4", "0c33bcce4d574ce6df163cbc7d1ecb22de65713184355bd3be81cc4ab0ecaafa", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
+  "credo": {:hex, :credo, "0.8.6", "335f723772d35da499b5ebfdaf6b426bfb73590b6fcbc8908d476b75f8cbca3f", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
   "decimal": {:hex, :decimal, "1.3.1", "157b3cedb2bfcb5359372a7766dd7a41091ad34578296e951f58a946fcab49c6", [:mix], [], "hexpm"},
   "deppie": {:hex, :deppie, "1.1.0", "cfb6fcee7dfb64eb78cb8505537971a0805131899326ad469ef10df04520f451", [:mix], [], "hexpm"},
   "dialyxir": {:hex, :dialyxir, "0.5.0", "5bc543f9c28ecd51b99cc1a685a3c2a1a93216990347f259406a910cf048d1d7", [:mix], [], "hexpm"},
@@ -9,6 +9,7 @@
   "ecto_mnesia": {:hex, :ecto_mnesia, "0.9.0", "adc177dfc2c2f2db8c3c68b01ac8e7f4b4293f6f677fc0e5915f2e4205515c49", [:mix], [{:confex, "~> 1.5", [hex: :confex, repo: "hexpm", optional: false]}, {:ecto, "~> 2.1.0", [hex: :ecto, repo: "hexpm", optional: false]}], "hexpm"},
   "elivndb": {:hex, :elivndb, "0.2.3", "e90760fd1971c89a8ee099449167f2976d221b5e91dce1edf8607b9801816a22", [:mix], [{:poison, "~> 3.1", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
   "eternal": {:hex, :eternal, "1.1.4", "3a40fd9b9708f79216a6ec8ae886f2b17685dc26b119b9c0403c2b0d3dc1ac69", [:mix], [{:deppie, "~> 1.1", [hex: :deppie, repo: "hexpm", optional: false]}], "hexpm"},
+  "exirc": {:git, "https://github.com/bitwalker/exirc.git", "f4c96bb1332e36635af617c9c3770bd4f52acaed", [tag: "master"]},
   "kaguya": {:hex, :kaguya, "0.6.4", "a1a66a6796442ef988597b2eb99fb4ad4b144e9424a0ade881e5b2b77e161082", [:mix], [], "hexpm"},
   "poison": {:hex, :poison, "3.1.0", "d9eb636610e096f86f25d9a46f35a9facac35609a7591b3be3326e99a0484665", [:mix], [], "hexpm"},
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], [], "hexpm"}}

@@ -5,7 +5,13 @@ use Mix.Config
 config :roseline, Db.Repo,
   adapter: EctoMnesia.Adapter
 
-config :kaguya, ecto_repos: [Db.Repo]
+config :roseline, bots: [
+  %{:server => "irc.rizon.net", :port => 6697,
+    :nick => "Roseline", :user => "Roseline", :name => "Roseline",
+    :channel => ["#vndis"], :ssl? => true}
+]
+
+config :roseline, ecto_repos: [Db.Repo]
 
 config :ecto_mnesia,
   host: {:system, :atom, "MNESIA_HOST", Kernel.node()},
@@ -14,13 +20,7 @@ config :ecto_mnesia,
 config :mnesia,
   dir: 'priv/data/mnesia'
 
-config :kaguya,
-  server: "irc.rizon.net",
-  server_ip_type: :inet,
-  port: 6697,
-  bot_name: "Roseline",
-  channels: ["#vndis"],
-  help_cmd: ".help",
-  use_ssl: true,
-  reconnect_interval: 5,
-  server_timeout: 600000
+extra_config = "#{Mix.env}.exs"
+if File.exists?(Path.join(__DIR__, extra_config)) do
+  import_config(extra_config)
+end

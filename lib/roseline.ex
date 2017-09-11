@@ -35,6 +35,8 @@ defmodule Roseline do
       supervisor(Db.Repo, [])
     ]
 
-    Supervisor.start_link(children, [strategy: :one_for_one, name: @name])
+    bots = Enum.map(Application.get_env(:roseline, :bots), &(worker(Roseline.Irc.Bot, [&1])))
+
+    Supervisor.start_link(children ++ bots, [strategy: :one_for_one, name: @name])
   end
 end
