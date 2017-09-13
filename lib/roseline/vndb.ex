@@ -9,8 +9,14 @@ defmodule Roseline.Vndb do
   """
   @spec get_vn(EliVndb.Client.get_options()) :: term()
   def get_vn(options) do
-    {_, result} = Cachex.get(Roseline.cache_name, Keyword.put(options, :type, "vn"))
-    result
+    try do
+      # For now it is possible to get timeout error in EliVndb when VNDB API
+      # disconnects suddenly.
+      {_, result} = Cachex.get(Roseline.cache_name, Keyword.put(options, :type, "vn"))
+      result
+    rescue
+      error -> error
+    end
   end
 
   @doc """
