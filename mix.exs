@@ -34,7 +34,7 @@ defmodule Roseline.Mixfile do
 
       {:exirc, git: "https://github.com/bitwalker/exirc.git", tag: "master"},
 
-      {:elivndb, "~> 0.2.3"},
+      {:elivndb, "~> 0.2"},
 
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
