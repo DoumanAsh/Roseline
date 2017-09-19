@@ -51,7 +51,7 @@ defmodule Roseline.Irc.Bot.Handlers do
           {:ok, item} -> {:ok, item["id"]}
           :not_found -> {:error, "'#{title}': No such VN..."}
           {:too_many, num} -> {:error, "'#{title}': Too many hits='#{num}'. #{try_yourself(title)}"}
-          :error -> "Unexpected error while processing your request. #{try_yourself(title)}"
+          :error -> {:error, "Unexpected error while processing your request. #{try_yourself(title)}"}
         end
     end
   end
