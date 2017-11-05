@@ -43,7 +43,7 @@ defmodule Roseline.Irc.Bot do
     GenServer.start_link(__MODULE__, [Config.from_params(params)], name: String.to_atom(nick))
   end
 
-  @spec start_link([%Config{}]) :: {:ok, any()}
+  @spec init([%Config{}]) :: {:ok, any()}
   def init([config]) do
     {:ok, client} = ExIrc.start_link!()
 
@@ -96,7 +96,7 @@ defmodule Roseline.Irc.Bot do
   #We joined
   def handle_info({:joined, channel}, config) do
     Logger.debug fn -> "Joined #{channel}" end
-    #ExIrc.Client.msg config.client, :privmsg, config.channel, "Hello world!"
+    privmsg("みなさん、ごきげんよう", channel, config.client)
     {:noreply, config}
   end
 
@@ -145,6 +145,14 @@ defmodule Roseline.Irc.Bot do
     ExIrc.Client.quit(state.client, "Farewell...")
     ExIrc.Client.stop!(state.client)
     :ok
+  end
+
+  @doc """
+  Shortcut to send privmsg.
+  """
+  @spec privmsg(binary(), binary(), pid()) :: :ok | {:error, atom()}
+  def privmsg(message, channel, client) do
+    ExIrc.Client.msg(client, :privmsg, channel, message)
   end
 
   ## Internal utils

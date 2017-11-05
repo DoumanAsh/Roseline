@@ -2,7 +2,7 @@ defmodule Roseline.Irc.Bot.CommandTask do
   @moduledoc """
   Bot commands for IRC
   """
-  use Task
+  use Task, restart: :transient
   alias Roseline.Irc.Bot.Handlers, as: Handlers
 
   defmodule Job do
@@ -24,6 +24,46 @@ defmodule Roseline.Irc.Bot.CommandTask do
 
   end
 
+  defmodule Watcher do
+    use GenServer, restart: :permanent
+
+    @spec start_link() :: GenServer.on_start()
+    def start_link() do
+      {:ok, supervisor} = Task.Supervisor.start_link()
+      GenServer.start_link(__MODULE__, [supervisor], name: __MODULE__)
+    end
+
+    @spec init([pid]) :: {:ok, any()}
+    def init([supervisor]) do
+      {:ok, supervisor}
+    end
+
+    @spec start(%Job{}) :: term()
+    def start(job) do
+      GenServer.call(__MODULE__, {:start, job})
+    end
+
+    def handle_call({:start, job}, _from, supervisor) do
+      {:ok, pid} = Task.Supervisor.start_child(supervisor, Roseline.Irc.Bot.CommandTask, :run, [job])
+      Process.monitor(pid)
+      {:reply, :noop, supervisor}
+    end
+
+    #Ignore normal reasons
+    def handle_info({:DOWN, _ref, :process, _object, :normal}, supervisor) do
+      {:noreply, supervisor}
+    end
+
+    def handle_info({:DOWN, _ref, :process, object, reason}, supervisor) do
+      require Logger
+
+      Logger.warn fn -> 'Abnormal exit of task #{object}. Reason: #{reason}' end
+      EliVndb.Client.stop()
+
+      {:noreply, supervisor}
+    end
+  end
+
   @doc """
   Starts handling IRC's message.
 
@@ -35,7 +75,7 @@ defmodule Roseline.Irc.Bot.CommandTask do
   """
   @spec start(binary(), binary(), binary(), pid()) :: {:ok, pid()}
   def start(nick, msg, from, client) do
-    Task.start(__MODULE__, :run, [Job.new(nick, String.trim(msg), from, client)])
+    Watcher.start(Job.new(nick, String.trim(msg), from, client))
   end
 
   @spec run(%Job{}) :: :ok | {:error, atom()}
@@ -52,9 +92,9 @@ defmodule Roseline.Irc.Bot.CommandTask do
   end
   defp reply(job, msg) do
     if job.nick == job.from do
-      ExIrc.Client.msg(job.client, :privmsg, job.from, msg)
+      Roseline.Irc.Bot.privmsg(msg, job.from, job.client)
     else
-      ExIrc.Client.msg(job.client, :privmsg, job.from, "#{job.nick}: #{msg}")
+      Roseline.Irc.Bot.privmsg("#{job.nick}: #{msg}", job.from, job.client)
     end
   end
 

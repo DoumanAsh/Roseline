@@ -32,7 +32,8 @@ defmodule Roseline do
     children = [
       worker(EliVndb.Client, []),
       worker(Cachex, [@cache_name, @cache_options]),
-      supervisor(Db.Repo, [])
+      supervisor(Db.Repo, []),
+      supervisor(Roseline.Irc.Bot.CommandTask.Watcher, [])
     ]
 
     bots = Enum.map(Application.get_env(:roseline, :bots), &(worker(Roseline.Irc.Bot, [&1])))
