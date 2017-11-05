@@ -71,10 +71,15 @@ defmodule Db.Repo do
     result
   end
 
-
   @spec get_hook(integer()) :: Ecto.Schema.t() | nil
   def get_hook(id) do
     Db.Repo.get(Db.Hook, id)
+  end
+
+  @spec get_all_hooks() :: [map()]
+  def get_all_hooks() do
+    require Ecto.Query
+    Enum.map(Db.Repo.all(Ecto.Query.from p in Db.Hook, order_by: [asc: p.id]), &Map.take(&1, [:id, :code, :versions]))
   end
 
 end

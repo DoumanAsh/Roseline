@@ -31,6 +31,7 @@ defmodule Roseline.Mixfile do
       {:cachex, "~> 2.1"},
       {:ecto, "~> 2.1"},
       {:ecto_mnesia, "~> 0.9"},
+      {:poison, "~> 3.1"},
 
       {:exirc, git: "https://github.com/bitwalker/exirc.git", tag: "master"},
 

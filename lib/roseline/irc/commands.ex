@@ -25,6 +25,9 @@ defmodule Roseline.Irc.Bot.CommandTask do
   end
 
   defmodule Watcher do
+    @moduledoc """
+    Task watcher.
+    """
     use GenServer, restart: :permanent
 
     @spec start_link() :: GenServer.on_start()
@@ -46,18 +49,22 @@ defmodule Roseline.Irc.Bot.CommandTask do
     def handle_call({:start, job}, _from, supervisor) do
       {:ok, pid} = Task.Supervisor.start_child(supervisor, Roseline.Irc.Bot.CommandTask, :run, [job])
       Process.monitor(pid)
-      {:reply, :noop, supervisor}
+      {:reply, pid, supervisor}
     end
 
     #Ignore normal reasons
     def handle_info({:DOWN, _ref, :process, _object, :normal}, supervisor) do
       {:noreply, supervisor}
     end
+    #It seems Process.monitor also causes in some cases exits with :noproc
+    def handle_info({:DOWN, _ref, :process, _object, :noproc}, supervisor) do
+      {:noreply, supervisor}
+    end
 
     def handle_info({:DOWN, _ref, :process, object, reason}, supervisor) do
       require Logger
 
-      Logger.warn fn -> 'Abnormal exit of task #{object}. Reason: #{reason}' end
+      Logger.warn fn -> 'Abnormal exit of task #{inspect(object)}. Reason: #{inspect(reason)}' end
       EliVndb.Client.stop()
 
       {:noreply, supervisor}

@@ -159,6 +159,12 @@ defmodule Roseline.Irc.Bot.Handlers do
       {:error, msg} -> msg
     end
   end
+  defp handle_cmd_hook("dump") do
+    {:ok, file} = File.open("roseline.json", [:write, :utf8])
+    hooks = Db.Repo.get_all_hooks()
+    IO.write(file, Poison.encode!(%{hooks: hooks}))
+    "Dump is stored locally"
+  end
 
   defp handle_cmd_hook("add"), do: "Usage: add -t <title#version> -c <code>"
   defp handle_cmd_hook("update"), do: "Usage: update -t <title#version> -c <code>"
