@@ -162,8 +162,12 @@ defmodule Roseline.Irc.Bot.Handlers do
   defp handle_cmd_hook("dump") do
     {:ok, file} = File.open("roseline.json", [:write, :utf8])
     hooks = Db.Repo.get_all_hooks()
-    IO.write(file, Poison.encode!(%{hooks: hooks}))
+    IO.write(file, Poison.encode!(%{hooks: hooks}, [pretty: true, ident: 4]))
+    IO.write(file, "\n");
     "Dump is stored locally"
+  end
+  defp handle_cmd_hook("restore") do
+    restore(File.open("roseline.json", [:read, :utf8]))
   end
 
   defp handle_cmd_hook("add"), do: "Usage: add -t <title#version> -c <code>"
@@ -198,6 +202,27 @@ defmodule Roseline.Irc.Bot.Handlers do
     Regex.scan(@vndb_vn_id, msg, capture: :all_but_first)
     |> Enum.map(&get_vn_by_id/1)
     |> Enum.reject(&is_nil/1)
+  end
+
+  @spec restore({:ok, File.io_device()} | {:error, any()}) :: binary()
+  defp restore({:ok, file}) do
+    require Logger
+
+    content = IO.read(file, :all)
+    File.close(file)
+
+    case Poison.decode(content) do
+      {:ok, content} ->
+        result = Db.Repo.restore_all_hooks(Map.get(content, :hooks, []))
+        Logger.info fn -> "Restore is #{result}" end
+        "Dump is restored."
+      {:error, error} ->
+        Logger.warn fn -> "Unexpected error parsing DB dump. Error: #{inspect(error)}" end
+        "Dump is corrupted."
+    end
+  end
+  defp restore({:error, _reason}) do
+    "No dump is available."
   end
 
   ###############

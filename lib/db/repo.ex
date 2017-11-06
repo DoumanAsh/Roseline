@@ -82,4 +82,21 @@ defmodule Db.Repo do
     Enum.map(Db.Repo.all(Ecto.Query.from p in Db.Hook, order_by: [asc: p.id]), &Map.take(&1, [:id, :code, :versions]))
   end
 
+  @spec restore_all_hooks([map()]) :: :ok | :error
+  def restore_all_hooks([]), do: :ok
+  def restore_all_hooks([head | rest]) do
+    require Logger
+    {result, _} = case get_hook(head.id) do
+      nil ->
+        vn = Db.Hook.create_w_validation(head.id, head.code, head.versions)
+        Db.Repo.insert(vn)
+      vn ->
+        vn = Db.Hook.changeset(vn, %{code: head.code, versions: head.versions})
+        Db.Repo.update(vn)
+    end
+    Logger.debug fn -> "Restore #{inspect(head)} is #{result}" end
+    restore_all_hooks(rest)
+  end
+  def restore_all_hooks(_unexpected), do: :error
+
 end
