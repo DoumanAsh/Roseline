@@ -1,0 +1,95 @@
+{
+  "hooks": [
+    {
+      "versions": {},
+      "id": 5785,
+      "code": "/ks20 /HW-20*0@1950:sdl_ttf.dll"
+    },
+    {
+      "versions": {},
+      "id": 8038,
+      "code": "/HA18@4920F2"
+    },
+    {
+      "versions": {},
+      "id": 18724,
+      "code": "/HSN-8@50637:game.exe"
+    },
+    {
+      "versions": {},
+      "id": 19223,
+      "code": "/HWN-4:-C@25D5CE:malie.exe"
+    },
+    {
+      "versions": {},
+      "id": 19841,
+      "code": "/HAN-C@62CC5:ノラと皇女と野良猫ハート２.exe"
+    },
+    {
+      "versions": {
+        "1.25": "/HS-C:-1C@F5BCB:pixel.windows.exe",
+        "1.2": "/HS-4:-8@F6572:pixel.windows.exe"
+      },
+      "id": 20159,
+      "code": "/HS-C:-1C@F5BCB:pixel.windows.exe"
+    },
+    {
+      "versions": {},
+      "id": 20339,
+      "code": "/HWN14*0@53519C"
+    },
+    {
+      "versions": {},
+      "id": 20418,
+      "code": "/HS18@71180:AGE.EXE"
+    },
+    {
+      "versions": {},
+      "id": 20470,
+      "code": "/HW-20@FA171:はにデビ.exe"
+    },
+    {
+      "versions": {},
+      "id": 20622,
+      "code": "/HWN-4@1C3C29:mashimaro.exe"
+    },
+    {
+      "versions": {},
+      "id": 21122,
+      "code": "/HAN-4@F365B1"
+    },
+    {
+      "versions": {},
+      "id": 21123,
+      "code": "/HS4C@[YOUR ADDRESS]:GDI32.dll"
+    },
+    {
+      "versions": {},
+      "id": 21414,
+      "code": "/HS4@151200:Freaks.exe"
+    },
+    {
+      "versions": {},
+      "id": 21455,
+      "code": "/HWN-4@83AAB:mahoXroba.exe"
+    },
+    {
+      "versions": {
+        "1.02": "/HSN-C@57575:cmvs32.exe",
+        "1.00": "/HSN-C@4574E5"
+      },
+      "id": 21523,
+      "code": "/HSN-C@4574E5"
+    },
+    {
+      "versions": {},
+      "id": 21532,
+      "code": "/HQN-8@9AC0:AdvHD.exe"
+    },
+    {
+      "versions": {},
+      "id": 21552,
+      "code": "/HS8:20@3B7E0:MakingLovers.exe"
+    }
+  ]
+}
